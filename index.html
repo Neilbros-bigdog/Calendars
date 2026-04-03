@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>測試</title>
+<style>
+body{background:#cdd9d0;font-family:sans-serif;padding:20px;}
+.box{background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;font-size:14px;}
+.ok{background:#d4f0d4;color:#1a5020;}
+.err{background:#ffd4d4;color:#b83232;}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;}
+.cell{background:#dce8de;border:1px solid #b8ccbc;border-radius:5px;padding:8px;text-align:center;font-weight:700;}
+.today{background:#3a6b45;color:#fff;}
+</style>
+</head>
+<body>
+
+<div id="s1" class="box">步驟1：HTML載入 ✅</div>
+<div id="s2" class="box">步驟2：等待JS...</div>
+<div id="s3" class="box">步驟3：等待...</div>
+<div id="s4" class="box">步驟4：等待...</div>
+<div id="s5" class="box">步驟5：等待...</div>
+<div class="grid" id="cal"></div>
+
+<script>
+document.getElementById('s2').textContent='步驟2：JS開始執行 ✅';
+document.getElementById('s2').className='box ok';
+
+try{
+  var now=new Date();
+  document.getElementById('s3').textContent='步驟3：new Date() = '+now.toString();
+  document.getElementById('s3').className='box ok';
+} catch(e){
+  document.getElementById('s3').textContent='步驟3錯誤：'+e.message;
+  document.getElementById('s3').className='box err';
+}
+
+try{
+  var y=now.getFullYear(),m=now.getMonth();
+  var fd=new Date(y,m,1).getDay();
+  var dm=new Date(y,m+1,0).getDate();
+  document.getElementById('s4').textContent='步驟4：y='+y+' m='+m+' fd='+fd+' dm='+dm+' ✅';
+  document.getElementById('s4').className='box ok';
+} catch(e){
+  document.getElementById('s4').textContent='步驟4錯誤：'+e.message;
+  document.getElementById('s4').className='box err';
+}
+
+try{
+  var cal=document.getElementById('cal');
+  for(var i=0;i<fd;i++){var d=document.createElement('div');d.className='cell';d.style.opacity='.3';d.textContent='.';cal.appendChild(d);}
+  for(var i=1;i<=dm;i++){var d=document.createElement('div');d.className='cell'+(i===now.getDate()?' today':'');d.textContent=i;cal.appendChild(d);}
+  document.getElementById('s5').textContent='步驟5：格子產生完成，共'+(fd+dm)+'格 ✅';
+  document.getElementById('s5').className='box ok';
+} catch(e){
+  document.getElementById('s5').textContent='步驟5錯誤：'+e.message;
+  document.getElementById('s5').className='box err';
+}
+</script>
+
+</body>
+</html>
